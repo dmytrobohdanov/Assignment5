@@ -13,10 +13,10 @@ public class RoadGame extends TextProgram {
     private ArrayList words= new ArrayList();
 
     public void run() {
-        threeLetters=readLine("enter 3 letters");
+        threeLetters = readLine("enter 3 letters");
 
         //check are there exactly 3 letters
-        if (threeLetters.length()<3) {
+        if (threeLetters.length() < 3) {
             println("wrong amount of letters");
             return;
         }
@@ -28,7 +28,47 @@ public class RoadGame extends TextProgram {
         readFile();
 
         searchSuitableWords();
+
+        //uncomment next line for search for triplets without words
+       // searchForTriplets();
     }
+
+    private void searchForTriplets() {
+        for (char i='a';i<='z';i++) {
+            for (char j = 'a'; j <= 'z'; j++) {
+                for (char k = 'a'; k <= 'z'; k++) {
+                    if(wordsCounter(i,j,k)==0)
+                        println(""+i+j+k);
+                }
+            }
+        }
+
+    }
+
+    private int wordsCounter(char chi, char chj, char chk) {
+        String currentWord;
+        threeLetters=""+chi+chj+chk; //String.valueOf(chi+chj+chk);
+        int counter=0;
+        while ((currentWord = getNextWordFromFile())!= null) {
+            for(int i=0;i<currentWord.length();i++){
+                if (threeLetters.charAt(0)==currentWord.charAt(i)) {
+                    //println("1");
+                    for (int i1 = i+1; i1 < currentWord.length(); i1++) {
+                        if (threeLetters.charAt(1) == currentWord.charAt(i1)) {
+                            // println("2");
+                            for (int i2 = i1+1; i2 < currentWord.length(); i2++) {
+                                if (threeLetters.charAt(2) == currentWord.charAt(i2)) {
+                                    counter++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return counter;
+    }
+
 
     private void searchSuitableWords() {
         String currentWord = "";
@@ -37,10 +77,10 @@ public class RoadGame extends TextProgram {
             for(int i=0;i<currentWord.length();i++){
                 if (threeLetters.charAt(0)==currentWord.charAt(i)) {
                     //println("1");
-                    for (int i1 = i; i1 < currentWord.length(); i1++) {
+                    for (int i1 = i+1; i1 < currentWord.length(); i1++) {
                         if (threeLetters.charAt(1) == currentWord.charAt(i1)) {
                             // println("2");
-                            for (int i2 = i1; i2 < currentWord.length(); i2++) {
+                            for (int i2 = i1+1; i2 < currentWord.length(); i2++) {
                                 if (threeLetters.charAt(2) == currentWord.charAt(i2)) {
                                     words.add(currentWord);
                                     println(currentWord);
